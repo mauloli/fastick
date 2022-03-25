@@ -1,23 +1,36 @@
 const connection = require("../../config/mysql");
 
 module.exports = {
-  getCountSchedule: () =>
+  getCountSchedule: (searchMovieId) =>
     new Promise((resolve, reject) => {
-      connection.query("SELECT COUNT(*) AS total FROM schedule", (err, res) => {
-        if (!err) {
-          resolve(res[0].total);
-        } else {
-          console.log(err.sqlMessage);
-          reject(new Error(err.sqlMessage));
-        }
-      });
-    }),
-  getAllSchedule: (limit, offset) =>
-    new Promise((resolve, reject) => {
-      // LIMIT ? OFFSET
       connection.query(
-        "SELECT * FROM schedule LIMIT ? OFFSET ?",
-        [limit, offset],
+        "SELECT COUNT(*) AS total FROM schedule WHERE movieid = ?",
+        searchMovieId,
+        (err, res) => {
+          if (!err) {
+            resolve(res[0].total);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
+    }),
+  getAllSchedule: (
+    limit,
+    offset,
+    searchMovieId,
+    searchLocation,
+    sortSchedule
+  ) =>
+    new Promise((resolve, reject) => {
+      // LIMIT ? OFFSET test
+      connection.query(
+        `SELECT s.*, m.name,m.category,m.synopsis,m.createdAt FROM movie AS m 
+        JOIN schedule AS s ON m.id = s.movieId WHERE movieid = ? 
+        AND location LIKE '%${searchLocation}%' ORDER 
+        BY ${sortSchedule} LIMIT ? OFFSET ?`,
+        [searchMovieId, limit, offset],
         (err, res) => {
           if (!err) {
             resolve(res);
@@ -27,6 +40,7 @@ module.exports = {
           }
         }
       );
+      // console.log(searchMovieId);
     }),
   getScheduleById: (id) =>
     new Promise((resolve, reject) => {

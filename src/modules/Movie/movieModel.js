@@ -1,24 +1,28 @@
 const connection = require("../../config/mysql");
 
 module.exports = {
-  getCountMovie: () =>
-    new Promise((resolve, reject) => {
-      connection.query("SELECT COUNT(*) AS total FROM movie", (err, res) => {
-        if (!err) {
-          resolve(res[0].total);
-        } else {
-          console.log(err.sqlMessage);
-          reject(new Error(err.sqlMessage));
-        }
-      });
-    }),
-  getAllMovie: (limit, offset) =>
+  getCountMovie: (searchName) =>
     new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM movie LIMIT ? OFFSET ?",
+        `SELECT COUNT(*) AS total FROM movie WHERE name LIKE '%${searchName}%'`,
+        (err, res) => {
+          if (!err) {
+            resolve(res[0].total);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
+    }),
+  getAllMovie: (limit, offset, searchName, sortMovie) =>
+    new Promise((resolve, reject) => {
+      const query = connection.query(
+        `SELECT * FROM movie WHERE name LIKE '%${searchName}%' ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
         [limit, offset],
         (err, res) => {
           if (!err) {
+            // console.log(res);
             resolve(res);
           } else {
             console.log(err.sqlMessage);
@@ -26,6 +30,7 @@ module.exports = {
           }
         }
       );
+      console.log(query.sql);
     }),
   getMovieByID: (id) =>
     new Promise((resolve, reject) => {
@@ -77,20 +82,9 @@ module.exports = {
       );
       console.log(query.sql);
     }),
-  deleteMobvie: (id) =>
+  deleteMovie: (id) =>
     new Promise((resolve, reject) => {
       connection.query(`DELETE FROM movie WHERE ID = ?`, id, (err, res) => {
-        if (!err) {
-          resolve(res);
-        } else {
-          console.log(err.sqlMessage);
-          reject(new Error(err.sqlMessage));
-        }
-      });
-    }),
-  getMovieByName: (name) =>
-    new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM movie WHERE ?`, name, (err, res) => {
         if (!err) {
           resolve(res);
         } else {

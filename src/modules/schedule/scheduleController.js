@@ -4,12 +4,20 @@ const scheduleModel = require("./scheduleModel");
 module.exports = {
   getAllSchedule: async (req, res) => {
     try {
-      let { page, limit } = req.query;
+      let { page, limit, searchMovieid, searchLocation, sortSchedule } =
+        req.query;
       // console.log(typeof page);
       page = Number(page);
       limit = Number(limit);
+
+      if (!searchMovieid) searchMovieid = 1;
+      if (!searchLocation) searchLocation = "";
+      if (!sortSchedule) sortSchedule = "id";
+      if (!page) page = 1;
+      if (!limit) limit = 10;
+
       const offset = page * limit - limit;
-      const totalData = await scheduleModel.getCountSchedule();
+      const totalData = await scheduleModel.getCountSchedule(searchMovieid);
       const totalPage = Math.ceil(totalData / limit);
 
       const pageInfo = {
@@ -18,7 +26,13 @@ module.exports = {
         limit,
         totalData,
       };
-      const result = await scheduleModel.getAllSchedule(limit, offset);
+      const result = await scheduleModel.getAllSchedule(
+        limit,
+        offset,
+        searchMovieid,
+        searchLocation,
+        sortSchedule
+      );
       return helperWrapper.response(
         res,
         200,
@@ -94,7 +108,7 @@ module.exports = {
       };
       // eslint-disable-next-line no-restricted-syntax
       for (const data in setData) {
-        // console.log(data); // property
+        // console.log(data); // propertyl
         // console.log(setData[data]); // value
         if (!setData[data]) {
           delete setData[data];

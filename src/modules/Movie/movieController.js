@@ -16,13 +16,17 @@ module.exports = {
   },
   getAllMovie: async (req, res) => {
     try {
-      let { page, limit } = req.query;
+      let { page, limit, searchName, sortMovie } = req.query;
       // console.log(typeof page);
       page = Number(page);
       limit = Number(limit);
+      if (!searchName) searchName = "";
+      if (!sortMovie) sortMovie = "name";
+      if (!page) page = 1;
+      if (!limit) limit = 100;
 
       const offset = page * limit - limit;
-      const totalData = await movieModel.getCountMovie();
+      const totalData = await movieModel.getCountMovie(searchName);
       const totalPage = Math.ceil(totalData / limit);
 
       const pageInfo = {
@@ -31,7 +35,12 @@ module.exports = {
         limit,
         totalData,
       };
-      const result = await movieModel.getAllMovie(limit, offset);
+      const result = await movieModel.getAllMovie(
+        limit,
+        offset,
+        searchName,
+        sortMovie
+      );
       return helperWrapper.response(
         res,
         200,
@@ -122,30 +131,12 @@ module.exports = {
   deleteMovie: async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await movieModel.deleteMobvie(id);
+      const result = await movieModel.deleteMovie(id);
       if (result.length <= 0) {
         return helperWrapper.response(
           res,
           404,
           `data by id ${id} not found`,
-          null
-        );
-      }
-
-      return helperWrapper.response(res, 200, "succes get data!", result);
-    } catch {
-      return helperWrapper.response(res, 400, "bad request", null);
-    }
-  },
-  getMovieByName: async (req, res) => {
-    try {
-      const { name } = req.body;
-      const result = await movieModel.getMovieByName(name);
-      if (result.length <= 0) {
-        return helperWrapper.response(
-          res,
-          404,
-          `data by id ${name} not found`,
           null
         );
       }
