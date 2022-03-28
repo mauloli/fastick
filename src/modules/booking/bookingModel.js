@@ -23,22 +23,18 @@ module.exports = {
     }),
   createBookinSeat: (data, id) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        `INSERT INTO bookingseat SET seat = '[${data}]',bookingid = ?`,
-        [id],
-        (error, result) => {
-          if (!error) {
-            const newResult = {
-              ...data,
-              id: result.insertId,
-            };
-            console.log(result);
-            resolve(newResult);
-          } else {
-            reject(new Error(error.sqlMessage));
-          }
+      const sqlQuery = `INSERT INTO bookingseat SET seat = '[${data}]',bookingid = ?`;
+      const query = connection.query(sqlQuery, [id], (error, result) => {
+        if (!error) {
+          const newResult = {
+            ...data,
+            id: result.insertId,
+          };
+          resolve(newResult);
+        } else {
+          reject(new Error(error.sqlMessage));
         }
-      );
+      });
       console.log(query.sql);
     }),
 };
