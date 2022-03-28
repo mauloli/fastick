@@ -32,4 +32,41 @@ module.exports = {
       return helperWrapper.response(res, 400, "baad request", null);
     }
   },
+  getBookingByid: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await bookingModel.getBookingById(id);
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(res, 200, "succes get data!", result);
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
+    }
+  },
+  updateBooking: async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (id.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+      const setData = "notActive";
+
+      const result = await bookingModel.updateBooking(id, setData);
+      return helperWrapper.response(res, 200, "succes use ticket!", result);
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
+    }
+  },
 };
