@@ -23,7 +23,7 @@ module.exports = {
       if (!searchName) searchName = "";
       if (!sortMovie) sortMovie = "name";
       if (!page) page = 1;
-      if (!limit) limit = 100;
+      if (!limit) limit = 3;
 
       const offset = page * limit - limit;
       const totalData = await movieModel.getCountMovie(searchName);

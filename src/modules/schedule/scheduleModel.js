@@ -97,7 +97,7 @@ module.exports = {
       );
       console.log(query.sql);
     }),
-  deleteMobvie: (id) =>
+  deleteSchedule: (id) =>
     new Promise((resolve, reject) => {
       connection.query(`DELETE FROM schedule WHERE ID = ?`, id, (err, res) => {
         if (!err) {

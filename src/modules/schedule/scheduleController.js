@@ -10,7 +10,7 @@ module.exports = {
       page = Number(page);
       limit = Number(limit);
 
-      if (!searchMovieid) searchMovieid = 1;
+      if (!searchMovieid) searchMovieid = 2;
       if (!searchLocation) searchLocation = "";
       if (!sortSchedule) sortSchedule = "id";
       if (!page) page = 1;
@@ -121,6 +121,24 @@ module.exports = {
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
       // console.error();
+    }
+  },
+  deleteSchedule: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await scheduleModel.deleteSchedule(id);
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(res, 200, "succes delete Data", result);
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
     }
   },
 };
