@@ -1,3 +1,4 @@
+const redis = require("../../config/redis");
 const helperWrapper = require("../../helper/wrapper");
 const movieModel = require("./movieModel");
 
@@ -64,7 +65,8 @@ module.exports = {
           null
         );
       }
-
+      // PROSES SIMPAN KE REDIS
+      redis.setEx(`getMovie:${id}`, 3600, JSON.stringify(result));
       return helperWrapper.response(res, 200, "succes get data!", result);
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
@@ -72,6 +74,7 @@ module.exports = {
   },
   createMovie: async (req, res) => {
     try {
+      console.log(req.file);
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
         name,

@@ -1,0 +1,79 @@
+const jwt = require("jsonwebtoken");
+const helperWrapper = require("../helper/wrapper");
+
+module.exports = {
+  authentication: (req, res, next) => {
+    let token = req.headers.authorization;
+
+    if (!token) {
+      return helperWrapper.response(res, 403, "loogin", null);
+    }
+
+    token = token.split(" ")[1];
+    jwt.verify(token, "RAHASIA", (error, result) => {
+      if (error) {
+        return helperWrapper.response(res, 403, error.message, null);
+      }
+
+      req.decodeToken = result;
+
+      next();
+    });
+  },
+
+  isAdmin: (req, res, next) => {
+    let token = req.headers.authorization;
+    if (!token) {
+      return helperWrapper.response(res, 403, "loogin", null);
+    }
+
+    token = token.split(" ")[1];
+    jwt.verify(token, "RAHASIA", (error, result) => {
+      if (result.role !== "admin") {
+        return helperWrapper.response(res, 403, "user cant do this", null);
+      }
+
+      req.decodeToken = result;
+      console.log(result);
+      next();
+    });
+  },
+  isLogin: (req, res, next) => {
+    let token = req.headers.authorization;
+    const { id } = req.params;
+    token = token.split(" ")[1];
+    jwt.verify(token, "RAHASIA", (error, result) => {
+      if (error) {
+        return helperWrapper.response(res, 403, error.message, null);
+      }
+
+      if (id) {
+        if (id != result.id) {
+          return helperWrapper.response(
+            res,
+            400,
+            "other user cannot do this",
+            null
+          );
+        }
+      }
+
+      req.decodeToken = result;
+
+      next();
+    });
+  },
+};
+
+/**
+ *  if (id) {
+        if (id != result.id) {
+          return helperWrapper.response(
+            res,
+            400,
+            "other user cannot do this",
+            null
+          );
+        }
+      }
+ */
