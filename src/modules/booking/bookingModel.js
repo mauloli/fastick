@@ -23,7 +23,7 @@ module.exports = {
     }),
   createBookinSeat: (data, id) =>
     new Promise((resolve, reject) => {
-      const sqlQuery = `INSERT INTO bookingseat SET seat = '[${data}]',bookingid = ?`;
+      const sqlQuery = `INSERT INTO bookingseat SET seat = '${data}',bookingid = ?`;
       const query = connection.query(sqlQuery, [id], (error, result) => {
         if (!error) {
           const newResult = {
@@ -53,6 +53,42 @@ module.exports = {
           }
         }
       );
+    }),
+  getBookingSeat: (scheduleId, timeBooking, dateBooking) =>
+    new Promise((resolve, reject) => {
+      const query = connection.query(
+        `SELECT bookingseat.seat FROM booking 
+        JOIN bookingseat ON booking.id = bookingseat.bookingid 
+        WHERE timeBooking = '${timeBooking}' AND dateBooking ='${dateBooking}' AND booking.scheduleId = ?`,
+        scheduleId,
+        (err, res) => {
+          if (!err) {
+            resolve(res);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
+      console.log(query.sql);
+    }),
+  getBookingDashboard: (premier, movieId, location) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT MONTH(booking.createdAt) AS month, SUM(totalPayment) AS revenue FROM booking 
+        JOIN schedule ON booking.scheduleId = schedule.id WHERE schedule.premier = ? 
+        AND schedule.movieId = ? AND location =? GROUP BY month`,
+        [premier, movieId, location],
+        (err, res) => {
+          if (!err) {
+            resolve(res);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
+      // console.log(query.sql);
     }),
   updateBooking: (id, data) =>
     new Promise((resolve, reject) => {

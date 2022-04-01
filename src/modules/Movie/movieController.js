@@ -1,6 +1,7 @@
 const redis = require("../../config/redis");
 const helperWrapper = require("../../helper/wrapper");
 const movieModel = require("./movieModel");
+const cloudinary = require("../../config/cloudinary");
 
 module.exports = {
   getHello: async (req, res) => {
@@ -18,6 +19,7 @@ module.exports = {
   getAllMovie: async (req, res) => {
     try {
       let { page, limit, searchName, sortMovie } = req.query;
+
       // console.log(typeof page);
       page = Number(page);
       limit = Number(limit);
@@ -42,6 +44,12 @@ module.exports = {
         searchName,
         sortMovie
       );
+      const test = redis.setEx(
+        `getMovie:${JSON.stringify(req.query)}`,
+        3600,
+        JSON.stringify({ result, pageInfo })
+      );
+      console.log(await test);
       return helperWrapper.response(
         res,
         200,
@@ -57,6 +65,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const result = await movieModel.getMovieByID(id);
+
       if (result.length <= 0) {
         return helperWrapper.response(
           res,
@@ -66,6 +75,7 @@ module.exports = {
         );
       }
       // PROSES SIMPAN KE REDIS
+      console.log(result[0].image);
       redis.setEx(`getMovie:${id}`, 3600, JSON.stringify(result));
       return helperWrapper.response(res, 200, "succes get data!", result);
     } catch {
@@ -74,7 +84,9 @@ module.exports = {
   },
   createMovie: async (req, res) => {
     try {
+      const image = req.file.filename;
       console.log(req.file);
+      // console.log(image);
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
         name,
@@ -83,6 +95,7 @@ module.exports = {
         cast,
         director,
         duration,
+        image,
       };
       const result = await movieModel.createMovie(setData);
 
@@ -94,7 +107,9 @@ module.exports = {
   updateMovie: async (req, res) => {
     try {
       const { id } = req.params;
+      const image = req.file.filename;
       const checkId = await movieModel.getMovieByID(id);
+
       if (checkId.length <= 0) {
         return helperWrapper.response(
           res,
@@ -103,6 +118,9 @@ module.exports = {
           null
         );
       }
+      cloudinary.uploader.destroy(`${checkId[0].image}`, (result) => {
+        console.log(result);
+      });
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
         name,
@@ -111,6 +129,7 @@ module.exports = {
         cast,
         director,
         duration,
+        image,
         updatedAt: new Date(Date.now()),
       };
 
@@ -134,7 +153,13 @@ module.exports = {
   deleteMovie: async (req, res) => {
     try {
       const { id } = req.params;
+      const checkImage = await movieModel.getMovieByID(id);
+      console.log(checkImage[0].image);
+      cloudinary.uploader.destroy(`${checkImage[0].image}`, (result) => {
+        console.log(result);
+      });
       const result = await movieModel.deleteMovie(id);
+
       if (result.length <= 0) {
         return helperWrapper.response(
           res,
@@ -144,7 +169,7 @@ module.exports = {
         );
       }
 
-      return helperWrapper.response(res, 200, "succes get data!", result);
+      return helperWrapper.response(res, 200, "succes delete data!", result);
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
     }

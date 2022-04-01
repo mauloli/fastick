@@ -6,6 +6,7 @@ module.exports = {
     try {
       const { id } = request.params;
       let result = await redis.get(`getMovie:${id}`);
+      console.log(result);
       if (result !== null) {
         // console.log("data ada di dalam redis");
         result = JSON.parse(result);
@@ -25,6 +26,7 @@ module.exports = {
   getMovieRedis: async (request, response, next) => {
     try {
       const data = await redis.get(`getMovie:${JSON.stringify(request.query)}`);
+
       if (data !== null) {
         const { result, pageInfo } = JSON.parse(data);
         return helperWrapper.response(

@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const helperWrapper = require("../../helper/wrapper");
 const userModel = require("./userModel");
 const cloudinary = require("../../config/cloudinary");
@@ -110,7 +111,45 @@ module.exports = {
       // console.log(setData);
       const result = await userModel.updateUserImg(id, setData);
 
-      return helperWrapper.response(res, 200, "Success update data !", result);
+      return helperWrapper.response(res, 200, "Success update image !", result);
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
+      // console.error();
+    }
+  },
+  updatePassword: async (req, res) => {
+    try {
+      // console.log(req.body);
+      const { id } = req.params;
+
+      const checkId = await userModel.getUserById(id);
+      if (checkId.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+      const { newPassword, confirmPassword } = req.body;
+
+      // eslint-disable-next-line no-restricted-syntax
+      if (newPassword !== confirmPassword) {
+        return helperWrapper.response(res, 400, "password not match");
+      }
+      req.body.newPassword = crypto
+        .createHmac("sha256", "tickitz")
+        .update(req.body.newPassword)
+        .digest("hex");
+
+      const result = await userModel.updatePassword(id, req.body.newPassword);
+
+      return helperWrapper.response(
+        res,
+        200,
+        "Success update password !",
+        result
+      );
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
       // console.error();

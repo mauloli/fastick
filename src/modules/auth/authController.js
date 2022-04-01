@@ -10,7 +10,7 @@ module.exports = {
         .createHmac("sha256", "tickitz")
         .update(req.body.password)
         .digest("hex");
-      const { firstName, lastName, noTelp, email, password, role } = req.body;
+      const { firstName, lastName, noTelp, email, password } = req.body;
       console.log(req.body.password);
 
       // 1. encrypt password
@@ -55,7 +55,7 @@ module.exports = {
       const payload = checkUser[0];
       delete payload.password;
 
-      const token = jwt.sign({ ...payload }, "RAHASIA", { expiresIn: "1h" });
+      const token = jwt.sign({ ...payload }, "RAHASIA", { expiresIn: "12h" });
       return helperWrapper.response(res, 200, "succes login", {
         id: payload.id,
         token,

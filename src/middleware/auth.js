@@ -6,7 +6,7 @@ module.exports = {
     let token = req.headers.authorization;
 
     if (!token) {
-      return helperWrapper.response(res, 403, "loogin", null);
+      return helperWrapper.response(res, 403, "you are not logged in", null);
     }
 
     token = token.split(" ")[1];
@@ -34,7 +34,7 @@ module.exports = {
       }
 
       req.decodeToken = result;
-      console.log(result);
+      console.log(result.role);
       next();
     });
   },

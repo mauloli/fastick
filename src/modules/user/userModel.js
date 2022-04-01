@@ -73,15 +73,12 @@ module.exports = {
     }),
   updatePassword: (id, data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        "UPDATE user SET ? WHERE id = ?",
+      connection.query(
+        "UPDATE user SET password =? WHERE id = ?",
         [data, id],
         (error) => {
           if (!error) {
-            const newResult = {
-              id,
-              ...data,
-            };
+            const newResult = { id };
 
             resolve(newResult);
           } else {
@@ -89,6 +86,6 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
+      // console.log(query.sql);
     }),
 };

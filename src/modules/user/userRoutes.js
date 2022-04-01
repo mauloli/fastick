@@ -12,10 +12,10 @@ Router.patch(
   userController.updateUserImg
 );
 Router.patch(
-  "/:id",
-  middlewareAuth.authentication,
+  "/password/:id",
   middlewareAuth.isLogin,
-  userController.updateUser
+  userController.updatePassword
 );
+Router.patch("/:id", middlewareAuth.isLogin, userController.updateUser);
 
 module.exports = Router;

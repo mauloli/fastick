@@ -28,7 +28,7 @@ module.exports = {
     const storage = new CloudinaryStorage({
       cloudinary,
       params: {
-        folder: "tickitz/user",
+        folder: "tickitz/movie",
       },
     });
     const upload = multer({ storage }).single("image");
