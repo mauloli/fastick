@@ -54,6 +54,23 @@ module.exports = {
         }
       );
     }),
+  getBookingByUserId: (id) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT booking.*,bookingseat.seat, movie.name, movie.category FROM booking 
+        JOIN schedule ON booking.scheduleId = schedule.id JOIN bookingseat ON bookingseat.bookingid =booking.id 
+        JOIN movie on schedule.movieid = movie.id WHERE userId = ?`,
+        id,
+        (err, res) => {
+          if (!err) {
+            resolve(res);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
+    }),
   getBookingSeat: (scheduleId, timeBooking, dateBooking) =>
     new Promise((resolve, reject) => {
       const query = connection.query(

@@ -44,12 +44,12 @@ module.exports = {
         searchName,
         sortMovie
       );
-      const test = redis.setEx(
+      redis.setEx(
         `getMovie:${JSON.stringify(req.query)}`,
         3600,
         JSON.stringify({ result, pageInfo })
       );
-      console.log(await test);
+
       return helperWrapper.response(
         res,
         200,

@@ -3,11 +3,23 @@ const express = require("express");
 const Router = express.Router();
 
 const scheduleController = require("./scheduleController");
+const middlewareRedis = require("../../middleware/redis");
+const middlewareAuth = require("../../middleware/auth");
 
-Router.get("/", scheduleController.getAllSchedule);
+Router.get(
+  "/",
+  middlewareRedis.getScheduleRedis,
+  scheduleController.getAllSchedule
+);
 Router.get("/:id", scheduleController.getScheduleById);
-Router.post("/", scheduleController.createSchedule);
-Router.patch("/:id", scheduleController.updateSchedule);
+Router.get("/user/:id", scheduleController.getScheduleById);
+Router.post("/", middlewareAuth.isAdmin, scheduleController.createSchedule);
+Router.patch(
+  "/:id",
+  middlewareAuth.isAdmin,
+  middlewareRedis.clearScheduleRedis,
+  scheduleController.updateSchedule
+);
 Router.delete("/:id", scheduleController.deleteSchedule);
 // Router.delete("/:id", scheduleController.deleteschedule);
 

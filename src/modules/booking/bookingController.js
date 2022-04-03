@@ -52,6 +52,29 @@ module.exports = {
       return helperWrapper.response(res, 400, "bad request", null);
     }
   },
+  getBookingByUserId: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await bookingModel.getBookingByUserId(id);
+      if (result.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+
+      return helperWrapper.response(
+        res,
+        200,
+        "succes get data booking from user id!",
+        result
+      );
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
+    }
+  },
   getBookingSeat: async (req, res) => {
     try {
       const { scheduleId, timeBooking, dateBooking } = req.query;

@@ -7,6 +7,7 @@ Router.post("/", bookingController.createBooking);
 Router.get("/dashboard", bookingController.getBookingDashboard);
 Router.patch("/:id", bookingController.updateBooking);
 Router.get("/:id", bookingController.getBookingByid);
+Router.get("/user/:id", bookingController.getBookingByUserId);
 Router.get("/", bookingController.getBookingSeat);
 Router.get("/dashboard", bookingController.getBookingDashboard);
 module.exports = Router;
