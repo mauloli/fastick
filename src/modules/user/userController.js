@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const helperWrapper = require("../../helper/wrapper");
 const userModel = require("./userModel");
 const cloudinary = require("../../config/cloudinary");
@@ -157,9 +158,11 @@ module.exports = {
   },
   activateUser: async (req, res) => {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const { id } = req.params;
-      const checkId = await userModel.getUserById(id);
+      const decode = jwt.verify(id, "iduser");
+
+      const checkId = await userModel.getUserById(decode.id);
       const setData = {
         status: "active",
       };
@@ -175,7 +178,7 @@ module.exports = {
 
       // eslint-disable-next-line no-restricted-syntax
 
-      const result = await userModel.activateUser(id, setData);
+      const result = await userModel.activateUser(decode.id, setData);
 
       return helperWrapper.response(res, 200, "Success update data !", result);
     } catch {

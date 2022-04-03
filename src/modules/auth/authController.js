@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const helperWrapper = require("../../helper/wrapper");
 const authModel = require("./authModel");
+const transporter = require("../../config/transporter");
 
 module.exports = {
   register: async (req, res) => {
@@ -41,6 +42,33 @@ module.exports = {
       const { email, password } = req.body;
 
       const checkUser = await authModel.getUserByEmail(email);
+      const { id } = checkUser[0];
+
+      if (checkUser[0].status !== "active") {
+        const tokenId = jwt.sign({ id }, "iduser");
+        const mailOptions = {
+          from: "maulanasholihinoli@gmail.com",
+          to: "maulana.sholihin@raharja.info",
+          subject: "Sending Email using Node.js",
+          text: `test`,
+          html: `<p>localhost:3001/user/activate/${tokenId}</p>`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Email sent: ${info.response}`);
+          }
+        });
+        return helperWrapper.response(
+          res,
+          404,
+          "please activate your account",
+          null
+        );
+      }
+
       //   1. jika email tidak ada did alam database
       if (checkUser.length < 1) {
         return helperWrapper.response(res, 404, "Email not registed", null);
@@ -53,9 +81,11 @@ module.exports = {
 
       // jwt
       const payload = checkUser[0];
+
       delete payload.password;
 
       const token = jwt.sign({ ...payload }, "RAHASIA", { expiresIn: "12h" });
+      // const tokenId= jwt.sign({})
       return helperWrapper.response(res, 200, "succes login", {
         id: payload.id,
         token,
