@@ -10,6 +10,7 @@ module.exports = {
     }
 
     token = token.split(" ")[1];
+
     jwt.verify(token, "RAHASIA", (error, result) => {
       if (error) {
         return helperWrapper.response(res, 403, error.message, null);

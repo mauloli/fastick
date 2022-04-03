@@ -155,4 +155,32 @@ module.exports = {
       // console.error();
     }
   },
+  activateUser: async (req, res) => {
+    try {
+      console.log(req.body);
+      const { id } = req.params;
+      const checkId = await userModel.getUserById(id);
+      const setData = {
+        status: "active",
+      };
+      console.log(setData);
+      if (checkId.length <= 0) {
+        return helperWrapper.response(
+          res,
+          404,
+          `data by id ${id} not found`,
+          null
+        );
+      }
+
+      // eslint-disable-next-line no-restricted-syntax
+
+      const result = await userModel.activateUser(id, setData);
+
+      return helperWrapper.response(res, 200, "Success update data !", result);
+    } catch {
+      return helperWrapper.response(res, 400, "bad request", null);
+      // console.error();
+    }
+  },
 };

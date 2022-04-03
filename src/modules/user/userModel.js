@@ -88,4 +88,24 @@ module.exports = {
       );
       // console.log(query.sql);
     }),
+  activateUser: (id, data) =>
+    new Promise((resolve, reject) => {
+      const query = connection.query(
+        "UPDATE user SET ? WHERE id = ?",
+        [data, id],
+        (error) => {
+          if (!error) {
+            const newResult = {
+              id,
+              ...data,
+            };
+
+            resolve(newResult);
+          } else {
+            reject(new Error(error.sqlMessage));
+          }
+        }
+      );
+      console.log(query.sql);
+    }),
 };

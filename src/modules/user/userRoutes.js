@@ -16,6 +16,7 @@ Router.patch(
   middlewareAuth.isLogin,
   userController.updatePassword
 );
+Router.patch("/activate/:id", userController.activateUser);
 Router.patch("/:id", middlewareAuth.isLogin, userController.updateUser);
 
 module.exports = Router;

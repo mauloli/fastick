@@ -12,7 +12,6 @@ Router.get(
   scheduleController.getAllSchedule
 );
 Router.get("/:id", scheduleController.getScheduleById);
-Router.get("/user/:id", scheduleController.getScheduleById);
 Router.post("/", middlewareAuth.isAdmin, scheduleController.createSchedule);
 Router.patch(
   "/:id",

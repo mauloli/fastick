@@ -1,10 +1,11 @@
 const connection = require("../../config/mysql");
 
 module.exports = {
-  getCountMovie: (searchName) =>
+  getCountMovie: (searchName, month) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT COUNT(*) AS total FROM movie WHERE name LIKE '%${searchName}%'`,
+        `SELECT COUNT(*) AS total FROM movie WHERE name LIKE '%${searchName}%' AND MONTH(releaseDate) = ?`,
+        month,
         (err, res) => {
           if (!err) {
             resolve(res[0].total);
@@ -15,11 +16,11 @@ module.exports = {
         }
       );
     }),
-  getAllMovie: (limit, offset, searchName, sortMovie) =>
+  getAllMovie: (limit, offset, searchName, sortMovie, month) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        `SELECT * FROM movie WHERE name LIKE '%${searchName}%' ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
-        [limit, offset],
+        `SELECT * FROM movie WHERE name LIKE '%${searchName}%' AND MONTH(releaseDate) = ? ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
+        [month, limit, offset],
         (err, res) => {
           if (!err) {
             // console.log(res);
@@ -42,6 +43,21 @@ module.exports = {
           reject(new Error(err.sqlMessage));
         }
       });
+    }),
+  getMovieByReleaseMonth: (month) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM movie WHERE MONTH(movie.releaseDate) = ?`,
+        month,
+        (err, res) => {
+          if (!err) {
+            resolve(res);
+          } else {
+            console.log(err.sqlMessage);
+            reject(new Error(err.sqlMessage));
+          }
+        }
+      );
     }),
 
   createMovie: (data) =>

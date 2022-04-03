@@ -18,18 +18,19 @@ module.exports = {
   },
   getAllMovie: async (req, res) => {
     try {
-      let { page, limit, searchName, sortMovie } = req.query;
+      let { page, limit, searchName, sortMovie, month } = req.query;
 
       // console.log(typeof page);
       page = Number(page);
       limit = Number(limit);
       if (!searchName) searchName = "";
       if (!sortMovie) sortMovie = "name";
+      if (!month) month = "";
       if (!page) page = 1;
       if (!limit) limit = 3;
 
       const offset = page * limit - limit;
-      const totalData = await movieModel.getCountMovie(searchName);
+      const totalData = await movieModel.getCountMovie(searchName, month);
       const totalPage = Math.ceil(totalData / limit);
 
       const pageInfo = {
@@ -42,7 +43,8 @@ module.exports = {
         limit,
         offset,
         searchName,
-        sortMovie
+        sortMovie,
+        month
       );
       redis.setEx(
         `getMovie:${JSON.stringify(req.query)}`,
@@ -82,6 +84,7 @@ module.exports = {
       return helperWrapper.response(res, 400, "bad request", null);
     }
   },
+
   createMovie: async (req, res) => {
     try {
       const image = req.file.filename;
