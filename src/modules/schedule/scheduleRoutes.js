@@ -11,7 +11,11 @@ Router.get(
   middlewareRedis.getScheduleRedis,
   scheduleController.getAllSchedule
 );
-Router.get("/:id", scheduleController.getScheduleById);
+Router.get(
+  "/:id",
+  middlewareRedis.getMovieByIdRedis,
+  scheduleController.getScheduleById
+);
 Router.post("/", middlewareAuth.isAdmin, scheduleController.createSchedule);
 Router.patch(
   "/:id",
@@ -19,7 +23,11 @@ Router.patch(
   middlewareRedis.clearScheduleRedis,
   scheduleController.updateSchedule
 );
-Router.delete("/:id", scheduleController.deleteSchedule);
+Router.delete(
+  "/:id",
+  middlewareRedis.clearScheduleRedis,
+  scheduleController.deleteSchedule
+);
 // Router.delete("/:id", scheduleController.deleteschedule);
 
 // Router.get("/hello", (req, res) => {

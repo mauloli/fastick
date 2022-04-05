@@ -8,6 +8,7 @@ const middlewareUpload = require("../../middleware/upload");
 Router.get("/:id", middlewareAuth.isAdmin, userController.getUserById);
 Router.patch(
   "/image/:id",
+  middlewareAuth.isLogin,
   middlewareUpload.handlingUploadUser,
   userController.updateUserImg
 );

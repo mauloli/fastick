@@ -12,7 +12,7 @@ const middleWareAuth = require("../middleware/auth");
 Router.use("/movie", middleWareAuth.authentication, movieRoutes);
 Router.use("/schedule", middleWareAuth.authentication, scheduleRoutes);
 Router.use("/booking", middleWareAuth.authentication, bookingRoutes);
-Router.use("/user", middleWareAuth.authentication, userRoutes);
+Router.use("/user", userRoutes);
 Router.use("/auth", authRoutes);
 
 // Router.get("/hello", (req, res) => {

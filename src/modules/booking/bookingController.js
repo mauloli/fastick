@@ -26,10 +26,12 @@ module.exports = {
 
       const result = await bookingModel.createBookingMovie(setData);
       const seatt = seat.map((item) => item);
-      console.log(seatt);
       await bookingModel.createBookinSeat(seatt, result.id);
 
-      return helperWrapper.response(res, 200, "succes create data", result);
+      return helperWrapper.response(res, 200, "succes create data", {
+        ...result,
+        seats: req.body.seat,
+      });
     } catch {
       return helperWrapper.response(res, 400, "baad request", null);
     }

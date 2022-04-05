@@ -11,7 +11,19 @@ module.exports = {
         folder: "tickitz/user",
       },
     });
-    const upload = multer({ storage }).single("image");
+    const upload = multer({
+      storage,
+      fileFilter(req, file, callback) {
+        const { mimetype } = file;
+        if (mimetype !== "image/png" && mimetype !== "image/jpeg") {
+          return callback(new Error("File must JPG or PNG "));
+        }
+        return callback(null, true);
+      },
+      limits: {
+        fileSize: 512000,
+      },
+    }).single("image");
     upload(request, response, (error) => {
       if (error instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
@@ -31,7 +43,19 @@ module.exports = {
         folder: "tickitz/movie",
       },
     });
-    const upload = multer({ storage }).single("image");
+    const upload = multer({
+      storage,
+      fileFilter(req, file, callback) {
+        const { mimetype } = file;
+        if (mimetype !== "image/png" && mimetype !== "image/jpeg") {
+          return callback(new Error("File must JPG or PNG "));
+        }
+        return callback(null, true);
+      },
+      limits: {
+        fileSize: 512000,
+      },
+    }).single("image");
     upload(request, response, (error) => {
       if (error instanceof multer.MulterError) {
         // A Multer error occurred when uploading.

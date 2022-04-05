@@ -51,7 +51,7 @@ module.exports = {
           to: "maulana.sholihin@raharja.info",
           subject: "Sending Email using Node.js",
           text: `test`,
-          html: `<p>localhost:3001/user/activate/${tokenId}</p>`,
+          html: `<p>http://localhost:3001/user/activate/${tokenId}</p>`,
         };
 
         transporter.sendMail(mailOptions, (error, info) => {

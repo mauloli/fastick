@@ -27,7 +27,7 @@ Router.patch(
   middlewareUpload.handlingUploadMovie,
   movieController.updateMovie
 );
-Router.delete("/:id", movieController.deleteMovie);
+Router.delete("/:id", middlewareAuth.isAdmin, movieController.deleteMovie);
 
 // Router.get("/hello", (req, res) => {
 //   res.status(200);

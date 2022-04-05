@@ -87,12 +87,16 @@ module.exports = {
       // }else{
 
       // }
-      console.log(checkImage[0].image);
-      cloudinary.uploader.destroy(`${checkImage[0].image}`, (result) => {
-        console.log(result);
-      });
+      console.log(checkImage[0].image.split(".")[1]);
+      cloudinary.uploader.destroy(
+        `${checkImage[0].image.split(".")[0]}`,
+        (result) => {
+          console.log(result);
+        }
+      );
+      console.log(req.file);
 
-      let image = req.file.filename;
+      let image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
       if (!image) {
         image = "";
       }

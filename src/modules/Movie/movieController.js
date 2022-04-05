@@ -87,8 +87,8 @@ module.exports = {
 
   createMovie: async (req, res) => {
     try {
-      const image = req.file.filename;
-      console.log(req.file);
+      const image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
+      console.log(image);
       // console.log(image);
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
@@ -121,9 +121,12 @@ module.exports = {
           null
         );
       }
-      cloudinary.uploader.destroy(`${checkId[0].image}`, (result) => {
-        console.log(result);
-      });
+      cloudinary.uploader.destroy(
+        `${checkId[0].image.split(".")[0]}`,
+        (result) => {
+          console.log(result);
+        }
+      );
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
         name,
