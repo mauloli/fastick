@@ -27,7 +27,7 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       const { id } = req.params;
       const checkId = await userModel.getUserById(id);
       if (checkId.length <= 0) {
@@ -77,24 +77,15 @@ module.exports = {
           null
         );
       }
-      // if (checkImage.length <= 0) {
-      //   return helperWrapper.response(
-      //     res,
-      //     404,
-      //     `data image by id ${id} not found`,
-      //     null
-      //   );
-      // }else{
 
-      // }
-      console.log(checkImage[0].image.split(".")[1]);
+      // console.log(checkImage[0].image.split(".")[1]);
       cloudinary.uploader.destroy(
         `${checkImage[0].image.split(".")[0]}`,
         (result) => {
           console.log(result);
         }
       );
-      console.log(req.file);
+      // console.log(req.file);
 
       let image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
       if (!image) {
@@ -170,7 +161,7 @@ module.exports = {
       const setData = {
         status: "active",
       };
-      console.log(setData);
+
       if (checkId.length <= 0) {
         return helperWrapper.response(
           res,

@@ -22,7 +22,7 @@ module.exports = {
         paymentMethod,
         totalTicket: seat.length,
       };
-      console.log(setData);
+      // console.log(setData);
 
       const result = await bookingModel.createBookingMovie(setData);
       const seatt = seat.map((item) => item);
@@ -91,7 +91,7 @@ module.exports = {
         return seat;
       });
 
-      console.log(seat);
+      // console.log(seat);
 
       if (result.length <= 0) {
         return helperWrapper.response(

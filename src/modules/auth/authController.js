@@ -28,7 +28,29 @@ module.exports = {
         return helperWrapper.response(res, 400, "email sudah terdaftar", null);
       }
       const result = await authModel.register(setData);
-      return helperWrapper.response(res, 200, "succes register user", result);
+      const { id } = result;
+      const tokenId = jwt.sign({ id }, "iduser");
+      const mailOptions = {
+        from: "maulanasholihinoli@gmail.com",
+        to: "maulana.sholihin@raharja.info",
+        subject: "Sending Email using Node.js",
+        text: `test`,
+        html: `<p>http://localhost:3001/user/activate/${tokenId}</p>`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(`Email sent: ${info.response}`);
+        }
+      });
+      return helperWrapper.response(
+        res,
+        200,
+        "succes register user, check email for activate your account!",
+        result
+      );
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
     }
@@ -42,25 +64,8 @@ module.exports = {
       const { email, password } = req.body;
 
       const checkUser = await authModel.getUserByEmail(email);
-      const { id } = checkUser[0];
 
       if (checkUser[0].status !== "active") {
-        const tokenId = jwt.sign({ id }, "iduser");
-        const mailOptions = {
-          from: "maulanasholihinoli@gmail.com",
-          to: "maulana.sholihin@raharja.info",
-          subject: "Sending Email using Node.js",
-          text: `test`,
-          html: `<p>http://localhost:3001/user/activate/${tokenId}</p>`,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(`Email sent: ${info.response}`);
-          }
-        });
         return helperWrapper.response(
           res,
           404,

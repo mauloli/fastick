@@ -2,7 +2,7 @@ const express = require("express");
 
 const Router = express();
 
-const movieRoutes = require("../modules/Movie/movieRoutes");
+const movieRoutes = require("../modules/movie/movieRoutes");
 const scheduleRoutes = require("../modules/schedule/scheduleRoutes");
 const bookingRoutes = require("../modules/booking/bookingRoutes");
 const userRoutes = require("../modules/user/userRoutes");

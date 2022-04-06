@@ -77,7 +77,7 @@ module.exports = {
         );
       }
       // PROSES SIMPAN KE REDIS
-      console.log(result[0].image);
+
       redis.setEx(`getMovie:${id}`, 3600, JSON.stringify(result));
       return helperWrapper.response(res, 200, "succes get data!", result);
     } catch {
@@ -88,7 +88,7 @@ module.exports = {
   createMovie: async (req, res) => {
     try {
       const image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
-      console.log(image);
+      // console.log(image);
       // console.log(image);
       const { name, category, synopsis, cast, director, duration } = req.body;
       const setData = {
@@ -160,7 +160,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const checkImage = await movieModel.getMovieByID(id);
-      console.log(checkImage[0].image);
+      // console.log(checkImage[0].image.split(".")[0]);
       cloudinary.uploader.destroy(`${checkImage[0].image}`, (result) => {
         console.log(result);
       });

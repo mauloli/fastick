@@ -35,7 +35,7 @@ module.exports = {
       }
 
       req.decodeToken = result;
-      console.log(result.role);
+
       next();
     });
   },
@@ -65,16 +65,3 @@ module.exports = {
     });
   },
 };
-
-/**
- *  if (id) {
-        if (id != result.id) {
-          return helperWrapper.response(
-            res,
-            400,
-            "other user cannot do this",
-            null
-          );
-        }
-      }
- */

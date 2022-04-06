@@ -25,7 +25,7 @@ module.exports = {
   ) =>
     new Promise((resolve, reject) => {
       // LIMIT ? OFFSET test
-      const query = connection.query(
+      connection.query(
         `SELECT s.*, m.name,m.category,m.synopsis,m.createdAt FROM movie AS m 
         JOIN schedule AS s ON m.id = s.movieId WHERE movieid = ? 
         AND location LIKE '%${searchLocation}%' ORDER 
@@ -41,7 +41,7 @@ module.exports = {
         }
       );
       // console.log(searchMovieId);
-      console.log(query.sql);
+      // console.log(query.sql);
     }),
   getScheduleById: (id) =>
     new Promise((resolve, reject) => {
@@ -60,26 +60,22 @@ module.exports = {
     }),
   createSchedule: (data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        "INSERT INTO schedule SET ?",
-        data,
-        (error, result) => {
-          if (!error) {
-            const newResult = {
-              id: result.insertId,
-              ...data,
-            };
-            resolve(newResult);
-          } else {
-            reject(new Error(error.sqlMessage));
-          }
+      connection.query("INSERT INTO schedule SET ?", data, (error, result) => {
+        if (!error) {
+          const newResult = {
+            id: result.insertId,
+            ...data,
+          };
+          resolve(newResult);
+        } else {
+          reject(new Error(error.sqlMessage));
         }
-      );
-      console.log(query.sql);
+      });
+      // console.log(query.sql);
     }),
   updateSchedule: (id, data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
+      connection.query(
         "UPDATE schedule SET ? WHERE id = ?",
         [data, id],
         (error) => {
@@ -95,7 +91,7 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
+      // console.log(query.sql);
     }),
   deleteSchedule: (id) =>
     new Promise((resolve, reject) => {

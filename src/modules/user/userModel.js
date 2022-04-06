@@ -33,7 +33,7 @@ module.exports = {
     }),
   updateUser: (id, data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
+      connection.query(
         "UPDATE user SET ? WHERE id = ?",
         [data, id],
         (error) => {
@@ -49,11 +49,10 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
     }),
   updateUserImg: (id, data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
+      connection.query(
         `UPDATE user SET image = '${data.image}' WHERE id = ${id}`,
 
         (error) => {
@@ -69,7 +68,6 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
     }),
   updatePassword: (id, data) =>
     new Promise((resolve, reject) => {

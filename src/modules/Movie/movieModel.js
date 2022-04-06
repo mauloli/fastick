@@ -18,7 +18,7 @@ module.exports = {
     }),
   getAllMovie: (limit, offset, searchName, sortMovie, month) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
+      connection.query(
         `SELECT * FROM movie WHERE name LIKE '%${searchName}%' AND MONTH(releaseDate) = ? ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
         [month, limit, offset],
         (err, res) => {
@@ -31,7 +31,7 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
+      // console.log(query.sql);
     }),
   getMovieByID: (id) =>
     new Promise((resolve, reject) => {
@@ -62,26 +62,22 @@ module.exports = {
 
   createMovie: (data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
-        "INSERT INTO movie SET ?",
-        data,
-        (error, result) => {
-          if (!error) {
-            const newResult = {
-              id: result.insertId,
-              ...data,
-            };
-            resolve(newResult);
-          } else {
-            reject(new Error(error.sqlMessage));
-          }
+      connection.query("INSERT INTO movie SET ?", data, (error, result) => {
+        if (!error) {
+          const newResult = {
+            id: result.insertId,
+            ...data,
+          };
+          resolve(newResult);
+        } else {
+          reject(new Error(error.sqlMessage));
         }
-      );
-      console.log(query.sql);
+      });
+      // console.log(query.sql);
     }),
   updateMovie: (id, data) =>
     new Promise((resolve, reject) => {
-      const query = connection.query(
+      connection.query(
         "UPDATE movie SET ? WHERE id = ?",
         [data, id],
         (error) => {
@@ -96,7 +92,7 @@ module.exports = {
           }
         }
       );
-      console.log(query.sql);
+      // console.log(query.sql);
     }),
   deleteMovie: (id) =>
     new Promise((resolve, reject) => {
