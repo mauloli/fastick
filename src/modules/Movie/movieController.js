@@ -90,7 +90,15 @@ module.exports = {
       const image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
       // console.log(image);
       // console.log(image);
-      const { name, category, synopsis, cast, director, duration } = req.body;
+      const {
+        name,
+        category,
+        synopsis,
+        cast,
+        director,
+        duration,
+        releaseDate,
+      } = req.body;
       const setData = {
         name,
         category,
@@ -98,6 +106,7 @@ module.exports = {
         cast,
         director,
         duration,
+        releaseDate,
         image,
       };
       const result = await movieModel.createMovie(setData);
@@ -110,7 +119,7 @@ module.exports = {
   updateMovie: async (req, res) => {
     try {
       const { id } = req.params;
-      const image = req.file.filename;
+      const image = `${req.file.filename}.${req.file.mimetype.split("/")[1]}`;
       const checkId = await movieModel.getMovieByID(id);
 
       if (checkId.length <= 0) {

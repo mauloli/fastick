@@ -77,7 +77,7 @@ module.exports = {
     }),
   updateMovie: (id, data) =>
     new Promise((resolve, reject) => {
-      connection.query(
+      const query = connection.query(
         "UPDATE movie SET ? WHERE id = ?",
         [data, id],
         (error) => {
@@ -92,7 +92,7 @@ module.exports = {
           }
         }
       );
-      // console.log(query.sql);
+      console.log(query.sql);
     }),
   deleteMovie: (id) =>
     new Promise((resolve, reject) => {
