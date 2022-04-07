@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { v4: uuidv4 } = require("uuid");
 const redis = require("../../config/redis");
 const helperWrapper = require("../../helper/wrapper");
 const authModel = require("./authModel");
@@ -18,6 +19,7 @@ module.exports = {
       // 1. encrypt password
       // 2. cek apakah email sudah terdaftar apa blm
       const setData = {
+        id: uuidv4(),
         firstName,
         lastName,
         noTelp,

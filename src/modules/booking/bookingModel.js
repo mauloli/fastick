@@ -107,10 +107,10 @@ module.exports = {
       );
       // console.log(query.sql);
     }),
-  updateBooking: (id, data) =>
+  updateBooking: (data, id) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        `UPDATE booking SET statusUsed =? WHERE id = ?`,
+      const query = connection.query(
+        `UPDATE booking SET ? WHERE id = ?`,
         [data, id],
         (error) => {
           if (!error) {
@@ -124,5 +124,6 @@ module.exports = {
           }
         }
       );
+      console.log(query.sql);
     }),
 };
