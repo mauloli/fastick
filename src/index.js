@@ -7,6 +7,8 @@ const compression = require("compression");
 const bodyParser = require("body-parser");
 const routerNav = require("./routes");
 
+require("dotenv").config();
+
 const app = express();
 const port = 3001;
 
