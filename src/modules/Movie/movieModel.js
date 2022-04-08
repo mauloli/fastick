@@ -18,9 +18,9 @@ module.exports = {
     }),
   getAllMovie: (limit, offset, searchName, sortMovie, month) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        `SELECT * FROM movie WHERE name LIKE '%${searchName}%' AND MONTH(releaseDate) = ? ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
-        [month, limit, offset],
+      const query = connection.query(
+        `SELECT * FROM movie WHERE name LIKE '%${searchName}%' ${month} ORDER BY ${sortMovie} LIMIT ? OFFSET ?`,
+        [limit, offset],
         (err, res) => {
           if (!err) {
             // console.log(res);
@@ -31,7 +31,7 @@ module.exports = {
           }
         }
       );
-      // console.log(query.sql);
+      console.log(query.sql);
     }),
   getMovieByID: (id) =>
     new Promise((resolve, reject) => {

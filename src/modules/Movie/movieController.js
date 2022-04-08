@@ -25,10 +25,13 @@ module.exports = {
       limit = Number(limit);
       if (!searchName) searchName = "";
       if (!sortMovie) sortMovie = "name";
-      if (!month) month = "";
       if (!page) page = 1;
       if (!limit) limit = 3;
-
+      if (month) {
+        month = `AND MONTH(releaseDate) = ${month}`;
+      } else {
+        month = "";
+      }
       const offset = page * limit - limit;
       const totalData = await movieModel.getCountMovie(searchName, month);
       const totalPage = Math.ceil(totalData / limit);
