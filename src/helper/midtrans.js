@@ -42,7 +42,7 @@ module.exports = {
       snap.transaction
         .notification(data)
         .then((statusResponse) => {
-          //   console.log(statusResponse);
+          // console.log(statusResponse);
           resolve(statusResponse);
         })
         .catch((error) => {
