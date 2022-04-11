@@ -38,7 +38,9 @@ module.exports = {
         seats: req.body.seat,
         redirectUrl: resultMidtrans.redirect_url,
       });
-    } catch {
+    } catch (error) {
+      console.log(error);
+
       return helperWrapper.response(res, 400, "baad request", null);
     }
   },
