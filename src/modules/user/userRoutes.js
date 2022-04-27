@@ -5,12 +5,7 @@ const userController = require("./userController");
 const middlewareAuth = require("../../middleware/auth");
 const middlewareUpload = require("../../middleware/upload");
 
-Router.get(
-  "/:id",
-  middlewareAuth.authentication,
-  middlewareAuth.isAdmin,
-  userController.getUserById
-);
+Router.get("/:id", middlewareAuth.authentication, userController.getUserById);
 Router.patch(
   "/image/:id",
   middlewareAuth.authentication,
