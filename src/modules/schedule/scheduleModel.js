@@ -27,7 +27,7 @@ module.exports = {
   ) =>
     new Promise((resolve, reject) => {
       // LIMIT ? OFFSET test
-      connection.query(
+      const query = connection.query(
         `SELECT s.*, m.name,m.category,m.synopsis,m.createdAt FROM movie AS m 
         JOIN schedule AS s ON m.id = s.movieId WHERE ${
           !searchMovieId ? "" : `movieid = ${searchMovieId} AND`
@@ -44,7 +44,7 @@ module.exports = {
         }
       );
       // console.log(searchMovieId);
-      // console.log(query.sql);
+      console.log(query.sql);
     }),
   getScheduleById: (id) =>
     new Promise((resolve, reject) => {
