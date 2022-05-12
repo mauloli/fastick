@@ -11,7 +11,7 @@ module.exports = {
       page = Number(page);
       limit = Number(limit);
 
-      if (!searchMovieid) searchMovieid = 2;
+      if (!searchMovieid) searchMovieid = false;
       if (!searchLocation) searchLocation = "";
       if (!sortSchedule) sortSchedule = "id";
       if (!page) page = 1;
