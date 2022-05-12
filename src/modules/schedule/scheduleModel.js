@@ -29,8 +29,9 @@ module.exports = {
       // LIMIT ? OFFSET test
       connection.query(
         `SELECT s.*, m.name,m.category,m.synopsis,m.createdAt FROM movie AS m 
-        JOIN schedule AS s ON m.id = s.movieId WHERE movieid = ? 
-        AND location LIKE '%${searchLocation}%' ORDER 
+        JOIN schedule AS s ON m.id = s.movieId WHERE ${
+          !searchMovieId ? "" : "movieid = ? AND"
+        } location LIKE '%${searchLocation}%' ORDER 
         BY ${sortSchedule} LIMIT ? OFFSET ?`,
         [searchMovieId, limit, offset],
         (err, res) => {
