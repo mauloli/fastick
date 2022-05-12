@@ -30,10 +30,10 @@ module.exports = {
       connection.query(
         `SELECT s.*, m.name,m.category,m.synopsis,m.createdAt FROM movie AS m 
         JOIN schedule AS s ON m.id = s.movieId WHERE ${
-          !searchMovieId ? "" : "movieid = ? AND"
+          !searchMovieId ? "" : `movieid = ${searchMovieId} AND`
         } location LIKE '%${searchLocation}%' ORDER 
         BY ${sortSchedule} LIMIT ? OFFSET ?`,
-        [searchMovieId, limit, offset],
+        [limit, offset],
         (err, res) => {
           if (!err) {
             resolve(res);
