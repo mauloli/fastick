@@ -53,7 +53,7 @@ module.exports = {
         return callback(null, true);
       },
       limits: {
-        fileSize: 512000,
+        fileSize: 1024000,
       },
     }).single("image");
     upload(request, response, (error) => {
