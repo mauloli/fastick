@@ -62,18 +62,22 @@ module.exports = {
 
   createMovie: (data) =>
     new Promise((resolve, reject) => {
-      connection.query("INSERT INTO movie SET ?", data, (error, result) => {
-        if (!error) {
-          const newResult = {
-            id: result.insertId,
-            ...data,
-          };
-          resolve(newResult);
-        } else {
-          reject(new Error(error.sqlMessage));
+      const query = connection.query(
+        "INSERT INTO movie SET ?",
+        data,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: result.insertId,
+              ...data,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error.sqlMessage));
+          }
         }
-      });
-      // console.log(query.sql);
+      );
+      console.log(query.sql);
     }),
   updateMovie: (id, data) =>
     new Promise((resolve, reject) => {
