@@ -18,7 +18,8 @@ Router.post(
   "/",
   middlewareAuth.isAdmin,
   middlewareUpload.handlingUploadMovie,
-  movieController.createMovie
+  movieController.createMovie,
+  middlewareRedis.clearMovieRedis
 );
 Router.patch(
   "/:id",
