@@ -5,6 +5,7 @@ const redis = require("../../config/redis");
 const helperWrapper = require("../../helper/wrapper");
 const authModel = require("./authModel");
 const { sendMail } = require("../../helper/mail");
+const { error } = require("console");
 
 module.exports = {
   register: async (req, res) => {
@@ -48,7 +49,8 @@ module.exports = {
         "succes register user, check email for activate your account!",
         result
       );
-    } catch {
+    } catch (error) {
+      console.log(error);
       return helperWrapper.response(res, 400, "bad request", null);
     }
   },
