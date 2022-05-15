@@ -50,7 +50,7 @@ module.exports = {
         result
       );
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       return helperWrapper.response(res, 400, "bad request", null);
     }
   },
