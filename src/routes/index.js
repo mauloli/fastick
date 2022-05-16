@@ -10,7 +10,7 @@ const authRoutes = require("../modules/auth/auth.Routes");
 const middleWareAuth = require("../middleware/auth");
 
 Router.use("/movie", movieRoutes);
-Router.use("/schedule", middleWareAuth.authentication, scheduleRoutes);
+Router.use("/schedule", scheduleRoutes);
 Router.use("/booking", bookingRoutes);
 Router.use("/user", userRoutes);
 Router.use("/auth", authRoutes);
