@@ -34,7 +34,8 @@ Router.delete(
   "/:id",
   middlewareAuth.authentication,
   middlewareAuth.isAdmin,
-  movieController.deleteMovie
+  movieController.deleteMovie,
+  middlewareRedis.clearMovieRedis
 );
 
 // Router.get("/hello", (req, res) => {
