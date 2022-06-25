@@ -227,7 +227,7 @@ module.exports = {
           null
         );
       }
-      const setData = "notActive";
+      const setData = { statusUsed: "notActive" };
 
       const result = await bookingModel.updateBooking(id, setData);
       return helperWrapper.response(res, 200, "succes use ticket!", result);
