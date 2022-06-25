@@ -107,7 +107,7 @@ module.exports = {
       );
       // console.log(query.sql);
     }),
-  updateBooking: (data, id) =>
+  updateBooking: (id, data) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
         `UPDATE booking SET ? WHERE id = ?`,
