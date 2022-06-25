@@ -231,7 +231,8 @@ module.exports = {
 
       const result = await bookingModel.updateBooking(id, setData);
       return helperWrapper.response(res, 200, "succes use ticket!", result);
-    } catch {
+    } catch (err) {
+      console.log(err.response);
       return helperWrapper.response(res, 400, "bad request", null);
     }
   },
