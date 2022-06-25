@@ -57,7 +57,7 @@ module.exports = {
   getBookingByUserId: (id) =>
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT booking.*,bookingseat.seat, movie.name, movie.category FROM booking 
+        `SELECT booking.*,bookingseat.seat, movie.name, movie.category, schedule.premier FROM booking 
         JOIN schedule ON booking.scheduleId = schedule.id JOIN bookingseat ON bookingseat.bookingid =booking.id 
         JOIN movie on schedule.movieid = movie.id WHERE userId = ?`,
         id,
