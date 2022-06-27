@@ -115,11 +115,10 @@ module.exports = {
       };
       const result = await movieModel.createMovie(setData);
       admin.messaging().send({
-        token:
-          "cYOoB2kSRzOPYLLtAMaOeE:APA91bHVxtBwCRQIeSaFDZMBBSd0Y4JwzDmOvvNQKzPNLSTJbw01sJGwrx6uXcOs8D_qPn6JRhtwo8gIuKFfLT_m8d-CJTQq6_aBjijrl0iq5sBSSeMcESLmNO7pDuhUQYBCuQ-8__9a",
+        topic: "new-movie",
         notification: {
-          title: "test-tittle",
-          body: "test body",
+          title: "New Movie",
+          body: `Movie ${name} up coming in.... Check Now!`,
         },
       });
       return helperWrapper.response(res, 200, "Success create data !", result);
