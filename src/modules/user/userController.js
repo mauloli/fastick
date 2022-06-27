@@ -78,7 +78,7 @@ module.exports = {
         );
       }
 
-      // console.log(checkImage[0].image.split(".")[1]);
+      console.log(checkImage[0].image.split(".")[1]);
       cloudinary.uploader.destroy(
         `${checkImage[0].image.split(".")[0]}`,
         (result) => {
