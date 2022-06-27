@@ -2,6 +2,7 @@ const redis = require("../../config/redis");
 const helperWrapper = require("../../helper/wrapper");
 const movieModel = require("./movieModel");
 const cloudinary = require("../../config/cloudinary");
+const admin = require("../../config/firebase");
 
 module.exports = {
   getHello: async (req, res) => {
@@ -113,7 +114,14 @@ module.exports = {
         image,
       };
       const result = await movieModel.createMovie(setData);
-
+      admin.messaging().send({
+        token:
+          "cYOoB2kSRzOPYLLtAMaOeE:APA91bHVxtBwCRQIeSaFDZMBBSd0Y4JwzDmOvvNQKzPNLSTJbw01sJGwrx6uXcOs8D_qPn6JRhtwo8gIuKFfLT_m8d-CJTQq6_aBjijrl0iq5sBSSeMcESLmNO7pDuhUQYBCuQ-8__9a",
+        notification: {
+          title: "test-tittle",
+          body: "test body",
+        },
+      });
       return helperWrapper.response(res, 200, "Success create data !", result);
     } catch {
       return helperWrapper.response(res, 400, "bad request", null);
