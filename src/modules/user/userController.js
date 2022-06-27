@@ -108,7 +108,8 @@ module.exports = {
       const result = await userModel.updateUserImg(id, setData);
 
       return helperWrapper.response(res, 200, "Success update image !", result);
-    } catch {
+    } catch (error) {
+      console.log(error);
       return helperWrapper.response(res, 400, "bad request", null);
       // console.error();
     }
