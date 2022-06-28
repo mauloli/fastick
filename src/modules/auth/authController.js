@@ -36,11 +36,11 @@ module.exports = {
       const tokenId = jwt.sign({ id }, "iduser", { expiresIn: "24h" });
 
       const setSendEmail = {
-        to: "maulana.sholihin@raharja.info",
+        to: email,
         subject: "Email Verfication",
         name: firstName,
         template: "verificationEmail.html",
-        buttonUrl: `http://localhost:3001/user/activate/${tokenId}`,
+        buttonUrl: `https://project-fastick.herokuapp.com/user/activate/${tokenId}`,
       };
       await sendMail(setSendEmail);
       return helperWrapper.response(
