@@ -53,7 +53,7 @@ module.exports = {
   updateUserImg: (id, data) =>
     new Promise((resolve, reject) => {
       const query = connection.query(
-        `UPDATE user SET image = '${data.image}' WHERE id = ${id}`,
+        `UPDATE user SET image = '${data.image}' WHERE id = '${id}'`,
 
         (error) => {
           if (!error) {
